@@ -1,5 +1,8 @@
 import numpy as np
 
+"""constant string variables used through the project"""
+
+"""path constant : modify accordingly"""
 myHome = "/home/eloy"
 metrics_folder = f'{myHome}/metrics_record' #json file containing losses and metrics are saved here
 training_sets = myHome + "/training_sets"
@@ -8,9 +11,9 @@ test_results_dir = myHome + "/test_results" #results are saved in this folder
 relative_path_type_channel = "deconv/c2"
 relative_path_raw = 'raw/c2'
 train_code_location = myHome + "/PSSR-master2/train.py"
-test_code_location = myHome + "/PSSR-master2/inference.py"
 wide_field_3D = f'{myHome}/wide_field/wide_field_resized' #wide field images used for testing the model
 
+"""some other constants"""
 LR = "LR"
 HR = "HR"
 HR_bilinear = "HR_bilinear"

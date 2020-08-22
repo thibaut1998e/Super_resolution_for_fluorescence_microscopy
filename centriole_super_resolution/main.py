@@ -102,32 +102,3 @@ if __name__ == "__main__":
                   topaz2=topaz2, center_txt=center_txt, size=size//upscale)
 
 
-
-
-
-
-
-
-
-
-
-
-    """
-    
-    for nb in range(1, 10):
-        train(HR_folder, 'LR_3', f'feat_{nb}', epochs=nb_epoch, max_rotate=20, size=312, bs=8, arch='wnresnet34', raw=raw,
-                                      lr=lr, feat_loss=feature_loss, alpha=alpha, max_zoom=max_zoom, prop=prop, nb_layer_vgg=nb)
-    """
-
-
-
-
-
-    """
-    info_dict = {}
-    info_dict[128] = {'bs':64, 'n_epochs': [2,2], 'lr' : [1e-3, (1e-5,1e-3)]}
-    info_dict[256] = {'bs':16, 'n_epochs': [5,5], 'lr' : [1e-3, (1e-5,1e-3)]}
-    info_dict[512] = {'bs':8, 'n_epochs': [5,5], 'lr' : [1e-3, (1e-5,1e-4)]}
-    progressively_resizing(info_dict)
-    """
-
