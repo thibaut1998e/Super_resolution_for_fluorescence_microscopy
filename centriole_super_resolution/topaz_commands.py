@@ -27,6 +27,8 @@ def compute_center_particles_using_trained_neunet_model(image_set, relative='',t
     Then centers are computed.
     It returns the path of txt file in which results are saved.
 
+    model_name, str : name of the model, should be located in pth.models
+
     If the folder image_set is split in several subfolders (ex: train - valid), it will compute the centers of images in all of them
 
     radius : parameter r used by topaz to prevent predicting several centers for one particle : topaz will not predict 2 centers
@@ -211,9 +213,11 @@ def train_topaz_model(set_topaz, model_name='centriole_detection', epochs=100, p
 
     '''train a neural network which detects centrioles
     First it resclales images if needed so that centriole size match the receptieve field of the topaz model
-    set_topaz : folder which contains 2 subfolder train and valid and 2 txt files with the labelled positions of centrioles,
+    set_topaz, str : folder which contains 2 subfolder train and valid and 2 txt files with the labelled positions of centrioles,
     train_label.txt and valid_label.txt
-    save the results in {models}/{model_name}'''
+    save the results in {models}/{model_name}_epoch{epochs}
+    Statistics are saved at location {myHome}/{stats_file}, you can then plot them using the method plot_metrics
+    in file plot_graphs.py'''
     # preprocess
     receptive_field = 71
     downsampling_scale = int(particle_size / receptive_field + 0.5)
