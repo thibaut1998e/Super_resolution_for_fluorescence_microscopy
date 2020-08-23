@@ -91,7 +91,7 @@ if __name__ == "__main__":
         train(HR_folder, LR_folder, model_name, scale=upscale, size=size, model=model, epochs=nb_epoch, max_rotate=20,bs=bs,
                           lr=lr, feat_loss=feature_loss, alpha=alpha, max_zoom=max_zoom, prop=prop,
                           nb_layer_vgg=nb_layer_vgg, betha=betha, p=p)
-    topaz = True #if true prediction is made only on patches centered on centrioles, other pixels are set to 0
+    topaz = False #if true prediction is made only on patches centered on centrioles, other pixels are set to 0
     topaz2 = False #if true generate as many output images as centrioles in input image (one for each)
     center_txt = f'{pth.myHome}/center_particles_wide_field_resized.txt' #txt file containing centers of centrioles (of wide field_images)
     # used if topaz or topaz2
