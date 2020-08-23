@@ -382,7 +382,6 @@ def crop_threeD_with_center_dict(array_3D, image_name, center_dict, tile_sz=50, 
     return centrioles
 
 
-
 def get_slice_centers(center_dict, im_name, slice_id, center):
     """return the centers of slice slice_id, if it is not in the dictionnary it returns the nearest slice
     which is in the dictionnary and print a warning message"""

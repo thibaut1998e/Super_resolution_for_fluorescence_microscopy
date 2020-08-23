@@ -9,7 +9,7 @@ import time
 import apply_transformation as aptf
 
 
-def compute_center_particles_using_trained_neunet_model(image_set, relative='',tile_sz=None, model_name='part_detection_epoch100.sav',
+def compute_center_particles(image_set, relative='',tile_sz=None, model_name='part_detection_epoch100.sav',
                                                         radius=40, centriole_size=60, thershold=-100):
     """receive an image set path of either 2D or 3D images and execute a topaz command line which computes the center
     of the particles using the model given.
@@ -268,7 +268,7 @@ def train_topaz_model(set_topaz, model_name='centriole_detection', epochs=100, p
 if __name__ == '__main__':
 
     cell_images = f'{pth.myHome}/wide_field/wide_field_cell_images'
-    compute_center_particles_using_trained_neunet_model(cell_images, relative='deconv/c2',
+    compute_center_particles(cell_images, relative='deconv/c2',
                                                         model_name='centriole_detection_epoch100.sav', centriole_size=20, tile_sz=512)
     #d = get_center_dict_from_txt(f'{pth.myHome}/center_particles_test_cell.txt', threshold=0)
     #print(d)

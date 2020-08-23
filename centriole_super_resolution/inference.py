@@ -182,14 +182,8 @@ def prediction(learn, in_img):
 
 
 def reconstruction_3D_centrioles(learn, in_img, im_name, center_dict=None, tile_size_topaz=50, radius=30, cut=True):
-    """returns as many output images as centrioles in the input images.
-    center_dict is the dictionary computed with the txt file from topaz : keys are names and values list of centers.
-    This dictionary contains centers predicted for all the slices.
-    tile_size_topaz is the size of the patches cropped in LR images.
-    The position of the center of one 3D centriole is computed as the average over all the slices of its position.
-    If 2 centers predicted in 2 different slices are closer than radius, they are consired to be the center of the
-    same centriole.
-    If cut is True, it cuts in the depth dimension at the position of local minima of intensity, to separate centrioles"""
+    """crop image in_img with transofrmation crop_threeD_with_center_dict, then make a rediction on each patch
+    and returns the results"""
     centrioles = tf.crop_threeD_with_center_dict(in_img, tile_sz=tile_size_topaz, center_dict=center_dict, cut=cut,
                                                  radius=radius, image_name=im_name, nb_of_crop=2)
     return [predict_3D_image(learn, tile) for tile in centrioles]
