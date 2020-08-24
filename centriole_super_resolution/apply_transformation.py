@@ -19,7 +19,7 @@ from functools import partial
 def transform(folder_in, folder_out, funcs_to_apply, folders_to_skip=[], **kwargs):
     """
     apply all the funcion in the list functs_to_apply (in the same order)
-    to all the images in folder_in and store them in folder_out. Keep the same architecture of folder_in by recursively
+    to all the images in folder_in and store the results in folder_out. Keep the same architecture of folder_in by recursively
     calling the function on each subfolders
 
     transformations f in funcs_to_apply take either  2D or 3D array as input, and some arguments in kwargs,
