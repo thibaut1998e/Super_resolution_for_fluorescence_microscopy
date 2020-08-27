@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
     p = 1 #proportion of training set used
 
-    raw = False #train on raw data
+    raw = False #train and test on raw data
 
     sigma = 4 #standard deviation of convolution
     #upscale = int(sigma*np.sqrt(2))
@@ -88,17 +88,17 @@ if __name__ == "__main__":
             Then train a model : maps the LR folder generated with HR_folder"""
         print('apply degradation model')
         aptf.conv_resize_norm(HR_spots, LR_folder, sigma, scale, noise=noise)
-        train(HR_folder, LR_folder, model_name, scale=upscale, size=size, model=model, epochs=nb_epoch, max_rotate=20,bs=bs,
-                          lr=lr, feat_loss=feature_loss, alpha=alpha, max_zoom=max_zoom, prop=prop,
-                          nb_layer_vgg=nb_layer_vgg, betha=betha, p=p)
+        train(HR_folder, LR_folder, model_name, scale=upscale, size=size, model=model, epochs=nb_epoch, max_rotate=20,
+              bs=bs, lr=lr, feat_loss=feature_loss, alpha=alpha, max_zoom=max_zoom, prop=prop,
+              nb_layer_vgg=nb_layer_vgg, betha=betha, p=p)
     topaz = False #if true prediction is made only on patches centered on centrioles, other pixels are set to 0
     topaz2 = False #if true generate as many output images as centrioles in input image (one for each)
     center_txt = f'{pth.myHome}/center_particles_wide_field_resized.txt' #txt file containing centers of centrioles (of wide field_images)
     # used if topaz or topaz2
 
     if test_valid or test_wide_field:
-        inf.inference(model_name, hr_folder=HR_folder, lr_folder=LR_folder,  raw=raw, scale=upscale,
-                  test_on_training=test_valid, test_on_wide_field=test_wide_field, topaz=topaz,
-                  topaz2=topaz2, center_txt=center_txt, size=size//upscale)
+        inf.inference(model_name, hr_folder=HR_folder, lr_folder=LR_folder, raw=raw, scale=upscale,
+                      test_on_training=test_valid, test_on_wide_field=test_wide_field, topaz=topaz,
+                      topaz2=topaz2, center_txt=center_txt, size=size // upscale)
 
 

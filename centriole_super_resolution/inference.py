@@ -182,7 +182,7 @@ def prediction(learn, in_img):
 
 
 def reconstruction_3D_centrioles(learn, in_img, im_name, center_dict=None, tile_size_topaz=50, radius=30, cut=True):
-    """crop image in_img with transofrmation crop_threeD_with_center_dict, then make a rediction on each patch
+    """crop image in_img with transofrmation crop_threeD_with_center_dict, then make a prediction on each patch
     and returns the results"""
     centrioles = tf.crop_threeD_with_center_dict(in_img, tile_sz=tile_size_topaz, center_dict=center_dict, cut=cut,
                                                  radius=radius, image_name=im_name, nb_of_crop=2)

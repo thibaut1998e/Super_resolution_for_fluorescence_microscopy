@@ -11,7 +11,7 @@ import apply_transformation as aptf
 
 def compute_center_particles(image_set, relative='',tile_sz=None, model_name='part_detection_epoch100.sav',
                                                         radius=40, centriole_size=60, thershold=-100):
-    """receive an image set path of either 2D or 3D images and execute a topaz command line which computes the center
+    """receive an image set path of either 2D or 3D images and executes a topaz command line which computes the center
     of the particles using the model given.
 
     The proccessed folder is image_set/relative, it is relevant because the name of the last folder of the path of image_set
@@ -159,7 +159,7 @@ class Center:
         """returns the nearest center to self in the list of center and its idx in the list"""
         d_min = 10**10
         idx = 0
-        if len (centers) == 0:
+        if len(centers) == 0:
             return None, idx, d_min
         for i,c in enumerate(centers):
             d = self.distTo(c)
@@ -169,10 +169,7 @@ class Center:
         return centers[idx], idx, d_min
 
 
-
-
-
-def get_center_dict_from_txt(center_txt, threshold=-100, nb_center_per_slice=2, normalize=True):
+def get_center_dict_from_txt(center_txt, threshold=-100, nb_center_per_slice=None, normalize=True):
     """Take as input a  txt file which contains centers of particules computed by topaz and returns a dictionnary,
     keys are names of images and values a list of centers. All the centers with a score less than threshold are not taken
     into account. It keeps for each images only nb_center_per_slice centrioles. (the ones with highest scores)
@@ -197,8 +194,20 @@ def get_center_dict_from_txt(center_txt, threshold=-100, nb_center_per_slice=2, 
             if dict.get(im_name) is None:
                 dict[im_name] = [Center(center, value)]
             else:
-                if not len(dict[im_name]) >= nb_center_per_slice:
-                    dict[im_name].append(Center(center, value))
+                dict[im_name].append(Center(center, value))
+
+    for key in dict.keys():
+        print(f'im name {key}')
+        values = dict[key]
+        print(f'before : {values}')
+        dict[key].sort(key=lambda x: x.s, reverse=True)
+        values = dict[key]
+        print(f'after sort {values}')
+        if nb_center_per_slice is not None:
+            dict[key] = dict[key][:nb_center_per_slice]
+            values = dict[key]
+            print(f'after {values}')
+
     if normalize:
         ma = max(scores)
         mi = min(scores)

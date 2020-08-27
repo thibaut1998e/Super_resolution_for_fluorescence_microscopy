@@ -48,7 +48,7 @@ def transform(folder_in, folder_out, funcs_to_apply, folders_to_skip=[], **kwarg
     for file in files:
         path = f'{folder_in}/{file}'
         if os.path.isdir(path):
-            print(file)
+            print(f'process folder {file}')
             transform(path, f'{folder_out}/{file}', funcs_to_apply, folders_to_skip, **kwargs)
         else:
             kwargs['image_name'] = file
@@ -112,10 +112,11 @@ def crop_topaz(fin, fout, center_txt, tile_sz=100):
     dict = tc.get_center_dict_from_txt(center_txt, threshold=0, nb_center_per_slice=1)
     transform(fin, fout, [tf.crop_with_center_dict, tf.normalize], tile_sz=tile_sz, center_dict=dict)
 
+
 def crop_threeD_topaz(fin, fout, center_txt):
     """crop 3D images using results from topaz"""
     dict = tc.get_center_dict_from_txt(center_txt, threshold=0, nb_center_per_slice=2)
-    transform(fin, fout, [tf.crop_threeD_with_center_dict, tf.normalize], center_dict=dict, radius=30, nb_of_crop=2,
+    transform(fin, fout, [tf.crop_threeD_with_center_dict, tf.normalize], center_dict=dict, radius=20, nb_of_crop=2,
               tile_sz=50, cut=False, average=False, folders_to_skip=['raw'], save_figure=True)
 
 
@@ -156,11 +157,14 @@ if __name__ == "__main__":
     print('add spots')
     add_spots(f_section, f_spots)
     """
-    #fin = f'{pth.myHome}/wide_field/wide_field_cell_images'
+    fin = f'{pth.myHome}/wide_field/wide_field_cell_images'
     fout = f'{pth.myHome}/wide_field/test_crop_3D'
-    #center_txt = f'{pth.myHome}/center_particles_wide_field_cell_images.txt'
-    center_txt = f'{pth.myHome}/center_particles_wide_field_resized.txt'
-    crop_threeD_topaz(pth.wide_field_3D, fout, center_txt)
+    center_txt = f'{pth.myHome}/center_particles_wide_field_cell_images.txt'
+
+    #center_txt = f'{pth.myHome}/center_particles_wide_field_resized.txt'
+    crop_threeD_topaz(fin, fout, center_txt)
+
+
 
 
 
