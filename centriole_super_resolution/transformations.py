@@ -121,6 +121,7 @@ def pad_center(array, x_size, y_size, **kwargs):
     return padded_array
 
 def pad(array, xb, yb, xa, ya, **kwargs):
+    xb, yb, xa, ya = int(xb), int(yb), int(xa), int(ya)
     padded = np.pad(array, ((xb, xa), (yb, ya)), mode='constant')
     return padded
 
@@ -358,7 +359,7 @@ def crop_threeD_with_center_dict(array_3D, image_name, center_dict, tile_sz=50, 
     for i,c in enumerate(average_position_centers):
         threeD_tile = crop_with_center(array_3D, tile_sz=tile_sz, center=c.c)
         min_locs, max_locs, argmin, argmax = pg.intenity_graph(threeD_tile, f'{image_name}_{i}', save_figure=save_figure)
-        if len(min_locs) == 0 or max_locs[0] < min_locs[0]:
+        if len(min_locs) == 0 or len(max_locs) == 0 or max_locs[0] < min_locs[0]:
             min_locs.insert(0, 0)
         if not average:
             if not cut:

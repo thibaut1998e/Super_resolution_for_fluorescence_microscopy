@@ -115,9 +115,15 @@ def crop_topaz(fin, fout, center_txt, tile_sz=100):
 
 def crop_threeD_topaz(fin, fout, center_txt):
     """crop 3D images using results from topaz"""
-    dict = tc.get_center_dict_from_txt(center_txt, threshold=0, nb_center_per_slice=2)
-    transform(fin, fout, [tf.crop_threeD_with_center_dict, tf.normalize], center_dict=dict, radius=20, nb_of_crop=2,
-              tile_sz=50, cut=False, average=False, folders_to_skip=['raw'], save_figure=True)
+    dict = tc.get_center_dict_from_txt(center_txt, threshold=0, nb_center_per_slice=4)
+    for key in dict.keys():
+        print('im_name', key)
+        for i in range(len(dict[key])):
+            print(f'center {i} : ')
+            print(dict[key][i])
+
+    transform(fin, fout, [tf.crop_threeD_with_center_dict, tf.normalize], center_dict=dict, radius=30,
+              tile_sz=50, cut=False, average=True, folders_to_skip=['raw'], save_figure=True, nb_of_crop=4)
 
 
 def conv_resize_norm(fin, fout, sigma=4, scale=0.5, noise=False):

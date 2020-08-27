@@ -197,16 +197,10 @@ def get_center_dict_from_txt(center_txt, threshold=-100, nb_center_per_slice=Non
                 dict[im_name].append(Center(center, value))
 
     for key in dict.keys():
-        print(f'im name {key}')
-        values = dict[key]
-        print(f'before : {values}')
         dict[key].sort(key=lambda x: x.s, reverse=True)
-        values = dict[key]
-        print(f'after sort {values}')
         if nb_center_per_slice is not None:
             dict[key] = dict[key][:nb_center_per_slice]
-            values = dict[key]
-            print(f'after {values}')
+
 
     if normalize:
         ma = max(scores)

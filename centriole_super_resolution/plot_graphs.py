@@ -103,6 +103,7 @@ def intenity_graph(image, image_name, save_figure=False):
         plt.grid()
         loc = f'{pth.myHome}/intensity_graph_{image_name}.png'
         plt.savefig(loc)
+        print(f'intensity graph of image {image_name} saved at location {loc}')
         plt.close()
 
     max_locs = []
