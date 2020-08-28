@@ -120,7 +120,7 @@ my_noise = TfmPixel(_my_noise)
 
 def get_xy_transforms(max_rotate=10., min_zoom=1., max_zoom=2., use_cutout=False, use_noise=False, xtra_tfms = None,
                       gauss_sigma=(0.01,0.05), pscale=(5,30)):
-    print("je suis bien la")
+
     base_tfms = [[
             rand_crop(),
             dihedral_affine(),
