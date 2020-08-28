@@ -9,7 +9,7 @@ training_sets = myHome + "/training_sets"
 models = myHome + "/models" #location in which models architecture are saved
 test_results_dir = myHome + "/test_results" #results are saved in this folder
 train_code_location = myHome + "/PSSR-master2/train.py" #location of the python file train.py
-wide_field_3D = f'{myHome}/wide_field/wide_field_resized' #wide field images used for testing the model
+
 
 """some other constants"""
 
