@@ -44,7 +44,7 @@ if __name__ == "__main__":
     sigma = 4 #standard deviation of convolution
     #upscale = int(sigma*np.sqrt(2))
     upscale = 2 #ratio HRshape/LRshape
-    size = 100 #fatsai applies rescaling so that HR images have a shape of (size, size). This parameter is recommanded to
+    size = 312 #fatsai applies rescaling so that HR images have a shape of (size, size). This parameter is recommanded to
     #be set to the size of images in HR_folder (rescaling will have no effect)
     noise = False #use noise in degradation model
 
