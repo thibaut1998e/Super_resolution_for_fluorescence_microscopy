@@ -39,6 +39,7 @@ def convolution(in_array, sigma, **kwargs):
     convolved_image = scp.gaussian_filter(in_array, [sigma, sigma])
     return convolved_image
 
+
 def random_crop2D(in_array, x_size, y_size=None,**kwargs):
     """crop randomly a tile of x_size*y_size"""
     if y_size is None: y_size = x_size
@@ -89,7 +90,7 @@ def cross_section(array3D, first=10, last=None, **kwargs):
 def cross_section_slices(array3D, first=10, last=None, p=1/4, **kwargs):
     """returns a list of slices between first and last which have an Intensity more than I_max*p"""
 
-    if last is None: last_slice = array3D.shape[0]
+    if last is None: last = array3D.shape[0]
     max_intensity = max([np.sum(array3D[i]) for i in range(len(array3D))])
     slices = []
     for i in range(first, last):
