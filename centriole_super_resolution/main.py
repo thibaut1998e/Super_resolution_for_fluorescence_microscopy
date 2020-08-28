@@ -78,7 +78,7 @@ if __name__ == "__main__":
     scale = 1 / upscale
     str_tile_sz = '' if size == 312 else f'_tile_sz_{size//2}'
     LR_folder = f'LR_{sigma}{str_tile_sz}'
-    print(f'LR folder : {LR_folder}')
+
     if noise:
         LR_folder += '_noise'
     if upscale != 2:
@@ -88,6 +88,7 @@ if __name__ == "__main__":
             Then train a model : maps the LR folder generated with HR_folder"""
         print('apply degradation model')
         aptf.conv_resize_norm(HR_spots, LR_folder, sigma, scale, noise=noise)
+        print(f' maps {LR_folder} with {HR_folder}')
         train(HR_folder, LR_folder, model_name, scale=upscale, size=size, model=model, epochs=nb_epoch, max_rotate=20,
               bs=bs, lr=lr, feat_loss=feature_loss, alpha=alpha, max_zoom=max_zoom, prop=prop,
               nb_layer_vgg=nb_layer_vgg, betha=betha, p=p)
