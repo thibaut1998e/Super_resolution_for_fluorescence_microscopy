@@ -6,15 +6,14 @@ import libtiff
 import skimage
 import skimage.io
 import skimage.filters
-from fastai.script import *
+
 
 from scipy.ndimage.interpolation import zoom as npzoom
 
 import scipy.ndimage as scp
 
-#from fastai.script import *
+from fastai.script import *
 import paths_definitions as pth
-from utils.multi import MultiImage
 import transformations as tf
 import plot_graphs as pg
 import apply_transformation as aptf

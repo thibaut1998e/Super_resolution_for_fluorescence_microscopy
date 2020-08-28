@@ -118,7 +118,7 @@ def crop_threeD_topaz(fin, fout, center_txt):
     dict = tc.get_center_dict_from_txt(center_txt, threshold=0, nb_center_per_slice=4)
 
     transform(fin, fout, [tf.crop_threeD_with_center_dict, tf.normalize], center_dict=dict, radius=20,
-              tile_sz=50, cut=False, average=True, folders_to_skip=['raw'], save_figure=True, nb_of_crop=2)
+              tile_sz=50, cut=False, average=True, folders_to_skip=['raw'], save_figure=True, nb_of_crop=3)
 
 
 def conv_resize_norm(fin, fout, sigma=4, scale=0.5, noise=False):
@@ -158,10 +158,10 @@ if __name__ == "__main__":
     print('add spots')
     add_spots(f_section, f_spots)
     """
-    fin = f'{pth.myHome}/wide_field/wide_field_resized'
-    #fin = f'{pth.myHome}/wide_field/wide_field_cell_images'
-    fout = f'{pth.myHome}/wide_field/test_crop_3D_2'
-    center_txt = f'{pth.myHome}/center_particles_wide_field_resized.txt'
+    #fin = f'{pth.myHome}/wide_field/wide_field_resized'
+    fin = f'{pth.myHome}/wide_field/wide_field_cell_images'
+    fout = f'{pth.myHome}/wide_field/test_crop_3D_3'
+    center_txt = f'{pth.myHome}/center_particles_wide_field_cell_images.txt'
 
     #center_txt = f'{pth.myHome}/center_particles_wide_field_resized.txt'
     crop_threeD_topaz(fin, fout, center_txt)
