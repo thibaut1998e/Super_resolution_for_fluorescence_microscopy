@@ -2,7 +2,7 @@ import os
 import shutil
 
 
-def split_train_valid(source_folder, proportion):
+def split_train_valid(source_folder, proportion=0.04):
 
     types = ["deconv", "raw"]
     channels = ["c1", "c2"]
@@ -44,7 +44,8 @@ def split_train_valid_hr_lr_together(hr_folder, lr_folder, proportion):
 if __name__ == "__main__":
     #split_train_valid("/home/eloy/assembly_tif", 0.04)
     #split_train_valid()
-    split_train_valid_hr_lr_together('/data/Eloy/data_PSSR/EM/lr_tiles_128', '/data/Eloy/data_PSSR/EM/hr_tiles_512', 0.04)
+    a = 1
+
 
 
 
