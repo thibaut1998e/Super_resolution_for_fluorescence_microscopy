@@ -3,10 +3,6 @@ import apply_transformation as aptf
 import paths_definitions as pth
 import inference as inf
 
-tile_size = 312
-import matplotlib.pyplot as plt
-
-
 
 def train(HR_folder, LR_folder, model_name, **kwargs):
 
