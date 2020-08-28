@@ -13,9 +13,6 @@ from functools import partial
 #from inference import get_learner
 
 
-
-
-
 def transform(folder_in, folder_out, funcs_to_apply, folders_to_skip=[], **kwargs):
     """
     apply all the funcion in the list functs_to_apply (in the same order)
@@ -121,6 +118,7 @@ def crop_threeD_topaz(fin, fout, center_txt):
               tile_sz=50, cut=False, average=True, folders_to_skip=['raw'], save_figure=True, nb_of_crop=3)
 
 
+
 def conv_resize_norm(fin, fout, sigma=4, scale=0.5, noise=False):
     """applies convolution resizing and normalization to images in fin and store them in fout"""
     if not noise:
@@ -149,19 +147,11 @@ def add_spots(fin, fout):
 
 
 if __name__ == "__main__":
-    """
-    fin = 'assembly_tif'
-    f_section = 'HR_2D_n'
-    print('cross section')
-    cross_section(fin, f_section)
-    f_spots = 'HR_spots4'
-    print('add spots')
-    add_spots(f_section, f_spots)
-    """
+
     #fin = f'{pth.myHome}/wide_field/wide_field_resized'
-    fin = f'{pth.myHome}/wide_field/wide_field_cell_images'
-    fout = f'{pth.myHome}/wide_field/test_crop_3D_3'
-    center_txt = f'{pth.myHome}/center_particles_wide_field_cell_images.txt'
+    fin = f'{pth.myHome}/wide_field/wide_field_resized'
+    fout = f'{pth.myHome}/wide_field/test_crop_3D_4'
+    center_txt = '/home/eloy/center_particles_wide_field_resized.txt'
 
     #center_txt = f'{pth.myHome}/center_particles_wide_field_resized.txt'
     crop_threeD_topaz(fin, fout, center_txt)

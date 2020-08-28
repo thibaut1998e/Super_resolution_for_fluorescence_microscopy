@@ -42,7 +42,6 @@ def plot_loss(model_name):
 
     add_legend_etc("loss validation and train (log scale)")
 
-
     test_results_path = f'{pth.test_results_dir}/{model_name}'
     plt.savefig(f'{test_results_path}/losses')
     plt.close()
@@ -86,6 +85,7 @@ def plot_metric(txt_file):
         plt.savefig(f'{metric}.png')
         plt.show()
 
+
 def intenity_graph(image, image_name, save_figure=False):
     """receive a 3D image (3D array) and plot the intensity graph with respect to the depth dimension if save_figure
     returns local minimums of this graph"""
@@ -127,19 +127,6 @@ def intenity_graph(image, image_name, save_figure=False):
             mi = intensities[i]
 
     return min_locs, max_locs, argmi, argma
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 if __name__ == "__main__":

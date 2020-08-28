@@ -173,10 +173,6 @@ def main(
                      'srfbn': SRFBN_learner}
     learner_func = learner_funcs[model] #function with generate the model
 
-    relative = pth.relative_path_type_channel if not raw else pth.relative_path_raw
-    hr_tifs = f"{pth.training_sets}/{hr_folder}/{relative}"
-    lr_tifs = f"{pth.training_sets}/{lr_folder}/{relative}"
-
     model_dir = 'models'
 
     if not debug:
@@ -206,7 +202,7 @@ def main(
     size = size
 
     print('bs:', bs, 'size: ', size, 'ngpu:', n_gpus)
-    data = get_data(bs, size, lr_tifs, hr_tifs,  max_zoom=max_zoom,
+    data = get_data(bs, size, lr_folder, hr_folder,  max_zoom=max_zoom,
                     use_noise=noise, mode=mode, scale = scale, max_rotate=max_rotate, p=p)
 
     callback_fns = []

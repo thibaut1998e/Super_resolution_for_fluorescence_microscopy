@@ -11,13 +11,19 @@ import apply_transformation as aptf
 
 def compute_center_particles(image_set, relative='',tile_sz=None, model_name='part_detection_epoch100.sav',
                                                         radius=40, centriole_size=60, thershold=-100):
-    """receive an image set path of either 2D or 3D images and executes a topaz command line which computes the center
+    """
+    !!!TOPAZ VIRTUAL ENV SHOULD BE ACTIVATED TO RUN THIS!!!
+
+    receive an image set path of either 2D or 3D images and executes a topaz command line which computes the center
     of the particles using the model given.
 
     The proccessed folder is image_set/relative, it is relevant because the name of the last folder of the path of image_set
     is used to define the name of the txt saved.
-    Ex : image_set = '/home/eloy/HR_n'  relative = 'deconv/c2/' txt saved : center_particles_HR_n,
+    Ex : image_set = '/home/eloy/HR_n'  relative = 'deconv/c2/' txt saved : {myHome}/center_particles_HR_n.txt,
     folder processed : '/home/eloy/HR_n/deconv/c2'
+
+    If the folder image_set is split in several sub-folders (ex: train - valid), it will compute the centers of images
+    in all of them
 
     First if images in image_set/relative are 3D images, a folder containing all the slices is created in {image_set}/{relative}_slices
 
@@ -29,8 +35,6 @@ def compute_center_particles(image_set, relative='',tile_sz=None, model_name='pa
 
     model_name, str : name of the model, should be located in pth.models
 
-    If the folder image_set is split in several subfolders (ex: train - valid), it will compute the centers of images in all of them
-
     radius : parameter r used by topaz to prevent predicting several centers for one particle : topaz will not predict 2 centers
     closer than radius pixels (in rescaled images)
 
@@ -38,7 +42,7 @@ def compute_center_particles(image_set, relative='',tile_sz=None, model_name='pa
 
     Threshold : centers with score less than threshold are not taken into account
 
-    !!!topaz virtual env should be activated to run this!!!"""
+    """
 
     name_set = image_set.split('/')[-1]
     image_set = f'{image_set}/{relative}'
@@ -60,12 +64,14 @@ def compute_center_particles(image_set, relative='',tile_sz=None, model_name='pa
     im_shape = np.array(io.imread(f'{fold}/{os.listdir(fold)[0]}')).shape
     if tile_sz is None:
         tile_sz = im_shape[1]
+    if tile_sz > im_shape[1]:
+        print('WARNING : tile size must be lower than image shape')
     print('shape', im_shape)
 
     slices = False
     if len(im_shape)==3:
         slices = True
-        print('cross section')
+        print(f'apply cross section to {image_set}')
         aptf.transform(image_set, f'{image_set}_slices', [tf.cross_section_slices], first=0, p=0)
         image_set = f'{image_set}_slices'
         im_shape = (im_shape[1], im_shape[2])
@@ -82,13 +88,17 @@ def compute_center_particles(image_set, relative='',tile_sz=None, model_name='pa
         os.remove(center_txt_scaled)
     txt = open(center_txt_scaled, 'w')
     for x_min, x_max, y_min, y_max in tiles_iterator(im_shape, tile_sz):
-        print('x_min : ', x_min); print('x_max : ', x_max); print('y_min : ', y_min); print('y_max : ', y_max)
-        resized = f'{pth.training_sets}/resized_{x_min}_{y_min}'
 
-        print('resizing and crop')
+        resized = f'{pth.training_sets}/resized_{x_min}_{y_min}'
+        print(f'resizing and crop {image_set} with a scale of {upscale}, bellow delimitation of patches cropped :')
+        print('x_min : ', x_min)
+        print('x_max : ', x_max)
+        print('y_min : ', y_min)
+        print('y_max : ', y_max)
         aptf.transform(image_set, resized, [tf.crop, tf.resize, tf.normalize],
                   scale=upscale, min_x=x_min, max_x=x_max, min_y=y_min, max_y=y_max, order=1)
         print('temps écoulé', time.time() - t_start)
+
         for split in splits:
             center_txt = f'{pth.myHome}/center_particles.txt'
             cmd = 'topaz extract'
@@ -96,10 +106,9 @@ def compute_center_particles(image_set, relative='',tile_sz=None, model_name='pa
             cmd += f' -m {model_path}'
             cmd += f' -o {center_txt}'
             cmd += f' {resized}/{split}/*.tiff'
-            print('extract particles')
+            print(f'extract particles of rescaled folder at location {resized}')
             os.system(cmd)
             print('temps écoulé', time.time() - t_start)
-
 
             with open(center_txt, 'r') as f:
                 lines = f.readlines()
@@ -125,7 +134,7 @@ def compute_center_particles(image_set, relative='',tile_sz=None, model_name='pa
     if slices:
         shutil.rmtree(image_set)
     txt.close()
-    print(f'results saved in location : {center_txt_scaled}')
+    print(f'results saved at location : {center_txt_scaled}')
 
     return center_txt_scaled
 
@@ -146,6 +155,7 @@ class Center:
         return dist(self.c, other.c)
 
     def average(self, other):
+        """weighted average of 2 centers by the scores"""
         c1 = np.array(self.c)
         c2 = np.array(other.c)
         self.c = tuple((self.s * c1 + other.s * c2) / (self.s + other.s))
@@ -189,7 +199,7 @@ def get_center_dict_from_txt(center_txt, threshold=-100, nb_center_per_slice=Non
         center = (int(line[2]), int(line[1])) #PIL convention != numpy convention
         value = float(line[3])
 
-        if value >=threshold:
+        if value >= threshold:
             scores.append(value)
             if dict.get(im_name) is None:
                 dict[im_name] = [Center(center, value)]
@@ -270,9 +280,10 @@ def train_topaz_model(set_topaz, model_name='centriole_detection', epochs=100, p
 
 if __name__ == '__main__':
 
-    cell_images = f'{pth.myHome}/wide_field/wide_field_cell_images'
+    cell_images = f'{pth.myHome}/wide_field/wide_field_resized'
     compute_center_particles(cell_images, relative='deconv/c2',
-                                                        model_name='centriole_detection_epoch100.sav', centriole_size=20, tile_sz=512)
+                             model_name='centriole_detection_epoch100.sav', centriole_size=20)
+
     #d = get_center_dict_from_txt(f'{pth.myHome}/center_particles_test_cell.txt', threshold=0)
     #print(d)
     #train_topaz_model(f'{pth.training_sets}/particle_detection')

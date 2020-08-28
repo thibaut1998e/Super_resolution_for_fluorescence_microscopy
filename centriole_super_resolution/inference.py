@@ -20,18 +20,22 @@ import apply_transformation as aptf
 
 #torch.cuda.device(0)
 
+LR = "LR"
+HR = "HR"
+HR_bilinear = "HR_bilinear"
+HR_predicted = "HR_predicted"
 
-def inference(learner_name, lr_path=pth.wide_field_3D, scale=2, hr_folder='', lr_folder='', test_on_wide_field=True, test_on_training=True,
-              raw=False, center_txt=None, topaz=False, topaz2=False, size=None):
+
+def inference(learner_name, lr_path, scale=2, hr_folder='', lr_folder='', test_on_wide_field=True, test_on_training=True,
+               center_txt=None, topaz=False, topaz2=False, size=None):
 
     """make prediction on wide field 3D images and on validation data and store results in a folder.
 
     learner_name, str : name without extension of the .pkl model. It should be located in the folder pth.models
-    lr_path, str : path of 3D test images. Processed images are located in {lr_path}/deconv/c2 if raw=False and at
-    {lr_path}/raw/c2 otherwise
+    lr_path, str : path of 3D test images.
 
-    lr_folder, hr_folder : name of HR folder and LR folder used for training the model. Processed images are located
-    in {training_sets}/{lr_folder}/{relative}/valid with relative = 'deconv/c2' if not raw and 'raw/c2' otherwise. HR images from hr folder
+    lr_folder, hr_folder : path of lr folder and hr folder used for training the model, should both
+    be split in train and valid. Processed images are in lr_folder/valid. HR images from hr_folder/valid
     are also saved in the results folder to visualize quickly the results
 
     test_on_wide_field, boolean : predict on wide field data
@@ -50,23 +54,21 @@ def inference(learner_name, lr_path=pth.wide_field_3D, scale=2, hr_folder='', lr
     #test_directory = myHome + "/test_results"
 
     learn = get_learner(learner_name)
-    relative = pth.relative_path_type_channel if not raw else pth.relative_path_raw
-    lr_path = lr_path + "/" + relative
     results = pth.test_results_dir + "/" + learner_name
     if os.path.exists(results):
         shutil.rmtree(results)
     os.makedirs(results)
-    lr_path_val = f'{pth.training_sets}/{lr_folder}/{relative}/valid'
+    lr_path_val = f'{lr_folder}/valid'
     if test_on_training:
         print(f'testing on validation data at location : {lr_path_val}')
-    hr_path_val = f'{pth.training_sets}/{hr_folder}/{relative}/valid'
+    hr_path_val = f'{hr_folder}/valid'
     results_validation = f'{results}/test_on_training' #folder which contains results on validation data
     test_files_validation = os.listdir(lr_path_val)[:10]
     pg.plot_loss(learner_name) #plot validation losses and metrics and save the graphs
-    os.makedirs(f'{results_validation}/{pth.LR}')
-    os.makedirs(f'{results_validation}/{pth.HR}')
-    os.makedirs(f'{results_validation}/{pth.HR_predicted}')
-    os.makedirs(f'{results_validation}/{pth.HR_bilinear}')
+    os.makedirs(f'{results_validation}/{LR}')
+    os.makedirs(f'{results_validation}/{HR}')
+    os.makedirs(f'{results_validation}/{HR_predicted}')
+    os.makedirs(f'{results_validation}/{HR_bilinear}')
     if test_on_wide_field:
         print(f'testing on wide field data at location : {lr_path}')
     results_test = f'{results}/test_on_wide_field' #folder which contains results on wide field data
@@ -94,7 +96,7 @@ def inference(learner_name, lr_path=pth.wide_field_3D, scale=2, hr_folder='', lr
 def predict_and_save(learn, file_name, results, lr_path, hr_path='', scale=2,  topaz=False,
                      topaz2=False, wide_field=False, center_dict=None, tile_size_topaz=None):
 
-    """predict an hr image for imaga at location {lr_path}/file_name. If test_on_wide_field is False it also saves HR, HR_bilinaear and LR
+    """predict an hr image for image at location {lr_path}/file_name. If test_on_wide_field is False it also saves HR, HR_bilinaear and LR
     images in other subfolders
     topaz : if true prediction is made only on patches centered on centrioles, other pixels are set to 0
     topaz2 : if true generate as many output images as centrioles in input image (one for each)"""
@@ -125,12 +127,12 @@ def predict_and_save(learn, file_name, results, lr_path, hr_path='', scale=2,  t
         out_img = out_img.astype(np.float32)
         name = f'{file_name.split(".")[0]}_{i}.tiff' if i >= 1 else file_name
         if not wide_field:
-            skimage.io.imsave(results + "/" + pth.HR_predicted + "/" + name, out_img)
-            skimage.io.imsave(results + "/" + pth.LR + "/" + name, np.array(data))
+            skimage.io.imsave(results + "/" + HR_predicted + "/" + name, out_img)
+            skimage.io.imsave(results + "/" + LR + "/" + name, np.array(data))
             resized_with_interpolation = scp.zoom(np.array(data), scale, order=3)
-            skimage.io.imsave(results + "/" + pth.HR_bilinear + "/" + name, resized_with_interpolation)
+            skimage.io.imsave(results + "/" + HR_bilinear + "/" + name, resized_with_interpolation)
             real_hr_image = np.array(skimage.io.imread(hr_path + "/" + name))
-            skimage.io.imsave(results + "/" + pth.HR + "/" + name, real_hr_image)
+            skimage.io.imsave(results + "/" + HR + "/" + name, real_hr_image)
         else:
             skimage.io.imsave(results + "/" + name, out_img)
 
