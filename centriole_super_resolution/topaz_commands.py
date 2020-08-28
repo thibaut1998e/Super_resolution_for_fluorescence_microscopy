@@ -211,7 +211,6 @@ def get_center_dict_from_txt(center_txt, threshold=-100, nb_center_per_slice=Non
         if nb_center_per_slice is not None:
             dict[key] = dict[key][:nb_center_per_slice]
 
-
     if normalize:
         ma = max(scores)
         mi = min(scores)
