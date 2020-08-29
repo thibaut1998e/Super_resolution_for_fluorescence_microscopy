@@ -7,6 +7,7 @@ import paths_definitions as pth
 import transformations as tf
 import time
 import apply_transformation as aptf
+import plot_graphs as pg
 
 
 def compute_center_particles(image_set, relative='',tile_sz=None, model_name='part_detection_epoch100.sav',
@@ -228,7 +229,7 @@ def train_topaz_model(set_topaz, model_name='centriole_detection', epochs=100, p
     set_topaz, str : folder which contains 2 subfolder train and valid and 2 txt files with the labelled positions of centrioles,
     train_label.txt and valid_label.txt
     save the results in {models}/{model_name}_epoch{epochs}
-    Statistics are saved at location {myHome}/{stats_file}, you can then plot them using the method plot_metrics
+    Statistics are saved at location {myHome}/{stats_file}, graph is plot using the method plot_metrics
     in file plot_graphs.py'''
     # preprocess
     receptive_field = 71
@@ -275,6 +276,9 @@ def train_topaz_model(set_topaz, model_name='centriole_detection', epochs=100, p
     cmd += ' --epoch-size 40'
     cmd += f' --num-epochs {epochs}'
     os.system(cmd)
+    pg.plot_metric(f'{pth.myHome}/{stats_file}.txt')
+
+
 
 
 if __name__ == '__main__':
