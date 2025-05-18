@@ -1,6 +1,6 @@
 # Centriole Super Resolution
 
-This repository contains the implementation of a deep learning-based super-resolution method aimed at enhancing wide-field fluorescence microscopy images to approximate confocal image quality. The project focuses on centriole imaging and builds upon existing methods in computational microscopy and image restoration.
+This repository contains the implementation of a deep learning-based super-resolution method aimed at enhancing wide-field fluorescence microscopy images to approximate confocal image quality. The project focuses on centriole imaging and builds upon existing methods in computational microscopy and image restoration. This readme file summarizes the goal and methodology of the project, for more details on usage of the code, the reader is reffered to the document *user_guide.pdf*
 
 ---
 
