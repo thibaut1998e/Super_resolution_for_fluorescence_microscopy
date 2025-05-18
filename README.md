@@ -42,6 +42,7 @@ Once the synthetic wide-field images are generated:
 This enables us to **recover high-resolution information** from low-resolution data without requiring time-intensive confocal imaging for every sample.
 
 You can see bellow an illutsration of our methodology: 
+
 ![img](centriole_super_resolution_methdology_scheme.png)
 
 ---
