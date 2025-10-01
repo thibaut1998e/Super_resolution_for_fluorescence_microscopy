@@ -33,13 +33,7 @@ To simulate wide-field images from confocal ones, we apply a **Gaussian convolut
 
 ### Learning the Inverse Mapping
 
-Once the synthetic wide-field images are generated:
-
-- A **neural network is trained** to approximate the inverse of this degradation model.
-- It learns to map the synthetic wide-field images back to their corresponding confocal images.
-- The network is then **applied to real wide-field images**, where the ground truth confocal image is unknown.
-
-This enables us to **recover high-resolution information** from low-resolution data without requiring time-intensive confocal imaging for every sample.
+Once the synthetic wide-field images are generated. A **neural network is trained** to approximate the inverse of this degradation model. It learns to map the synthetic wide-field images back to their corresponding confocal images. The network is then **applied to real wide-field images**, where the ground truth confocal image is unknown. This enables us to **recover high-resolution information** from low-resolution data without requiring time-intensive confocal imaging for every sample.
 
 You can see bellow an illutsration of our methodology: 
 
